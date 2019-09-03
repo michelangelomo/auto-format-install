@@ -1,0 +1,21 @@
+#!/bin/bash
+echo "Write the absolute path of the project: "
+read path
+
+cd $path/.git/hooks
+
+file=pre-commit
+if ! test -f "$file"; then
+    echo "pre-commit script not exists, creating it..."
+    echo "#!/bin/sh" > $file
+fi
+
+echo "echo \"going to main path of the project...\"" >> $file
+echo "cd ../../" >> $file
+echo "echo \"launch mix format...\"" >> $file
+echo "mix format mix.exs \"lib/**/*.{ex,exs}\" \"test/**/*.{ex,exs}\" \"priv/**/*.{ex,exs}\" \"config/**/*.{ex,exs}\"" >> $file # append command
+echo "echo \"code formatted!\"" >> $file
+
+chmod +x $file # make it executable
+
+echo "Done!"
